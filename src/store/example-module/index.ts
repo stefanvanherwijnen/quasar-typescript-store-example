@@ -1,24 +1,30 @@
 import Vue from 'vue'
-import VueCompositionAPI, { ref, computed } from '@vue/composition-api'
+import VueCompositionAPI, { reactive, computed } from '@vue/composition-api'
 Vue.use(VueCompositionAPI)
 
-interface ExampleStateInterface {
-  number: number
-}
-
-interface ExampleMutationsInterface {
-  add: () => void
-}
-
-const state = ref<ExampleStateInterface>({
+const state = reactive({
   number: 0
 })
 
-const mutations: ExampleMutationsInterface = {
-  add: () => { state.value.number = 1 }
+const mutations = {
+  add: () => { state.number++ }
 }
 
+const actions = {
+  load: () => {}
+}
+
+const getters = {
+  plusOne: () => state.number + 1
+}
+
+export type ExampleStateInterface = typeof state
+export type ExampleMutationsInterface = typeof mutations
+export type ExampleActionsInterface = typeof actions
+export type ExampleGettersInterface = typeof getters
 export default {
-  state: computed(() => state.value),
-  mutations: mutations
+  state: computed(() => state),
+  mutations: mutations,
+  actions: actions,
+  getters: getters
 }
